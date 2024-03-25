@@ -1,0 +1,4 @@
+optimizer:
+  type: BGD
+  lr: 1E-3
+  eps: 1E-6

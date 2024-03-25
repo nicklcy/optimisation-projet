@@ -1,0 +1,12 @@
+environment:
+  type: basic
+
+  init_pos: [0, 5]
+  target_pos: [8, 6]
+  init_vel: [3, 5]
+
+  gravity: [0, -30]
+  bounds: [[0, 10], [0, 20]]
+
+  tap_vel: 15
+  min_tap_interval: 0.05

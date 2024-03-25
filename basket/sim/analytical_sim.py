@@ -18,11 +18,13 @@ class AnalyticalSimulator(Simulator):
         self.cur_pos[0] += (self.cur_vel[0] + end_vel_x) * elapsed * .5
         self.cur_pos[1] += (self.cur_vel[1] + end_vel_y) * elapsed * .5
         self.cur_vel = [end_vel_x, end_vel_y]
-        print('cur_pos:', self.cur_pos)
+
+        self.pos_list.append((self.cur_pos[0].clone(), self.cur_pos[1].clone()))
+        self.vel_list.append((self.cur_vel[0].clone(), self.cur_vel[1].clone()))
 
         self.cur_tme = tme.clone()
 
-    def sim_to_time(self, tme):
+    def sim_to_time(self, tme: float):
         assert tme >= self.cur_tme.val
 
         min_tap = self.cur_tme.val
@@ -44,3 +46,9 @@ class AnalyticalSimulator(Simulator):
             tap_bound = self.last_tap + self.env.min_tap_interval
 
         self._to_time_no_tap(Scalar(tme))
+
+    def sim_to_target(self):
+        dis = self.env.target_pos[0] - self.env.init_pos[0]
+        elapsed_tme = dis / self.env.init_vel[0]
+        tme = elapsed_tme + self.init_tme
+        self.sim_to_time(tme)

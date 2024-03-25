@@ -4,10 +4,16 @@ from basket.scalar import Scalar
 class Simulator:
     def __init__(self, env, init_tme: float = 0, tap_times=None):
         self.env = env
+        self.reset(init_tme, tap_times)
 
+    def reset(self, init_tme: float = 0, tap_times=None):
+        self.init_tme = init_tme
         self.cur_tme = Scalar(init_tme)
         self.cur_pos = list(Scalar.to_scalar_iterable(self.env.init_pos))
         self.cur_vel = list(Scalar.to_scalar_iterable(self.env.init_vel))
+
+        self.pos_list = []
+        self.vel_list = []
 
         self.last_tap = None
 
@@ -16,11 +22,14 @@ class Simulator:
         else:
             self.tap_times = []
 
-    def add_tap_time(self, tme):
+    def add_tap_time(self, tme: float):
         assert tme >= self.cur_tme, "Le temps ajouté est trop tard"
         self.tap_times.append(tme)
 
-    def sim_to_time(self, tme):
+    def sim_to_time(self, tme: float):
+        raise NotImplementedError
+
+    def sim_to_target(self):
         raise NotImplementedError
 
     def in_x_bounds(self):

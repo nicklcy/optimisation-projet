@@ -7,16 +7,16 @@ import functools
 class GradArray:
     def __init__(self, len: Union[int, Iterable] = 0):
         if isinstance(len, Iterable):
-            self.grad = list(deepcopy(len))
+            self.val = list(deepcopy(len))
         else:
-            self.grad = [0.] * len
+            self.val = [0.] * len
 
     def resize(self, new_len=0):
-        if new_len > len(self.grad):
-            self.grad += [0.] * (new_len - len(self.grad))
+        if new_len > len(self.val):
+            self.val += [0.] * (new_len - len(self.val))
 
     def __len__(self):
-        return len(self.grad)
+        return len(self.val)
 
     @property
     def size(self):
@@ -29,20 +29,20 @@ class GradArray:
         ret = self.clone()
         ret.resize(arr.size)
         for i in range(arr.size):
-            ret.grad[i] += arr.grad[i]
+            ret.val[i] += arr.val[i]
         return ret
 
     def __mul__(self, k: float):
         ret = self.clone()
         for i in range(self.size):
-            ret.grad[i] *= k
+            ret.val[i] *= k
         return ret
 
     def __sub__(self, arr):
         return self + arr * (-1)
 
     def __repr__(self):
-        return repr(self.grad)
+        return repr(self.val)
 
 
 @functools.total_ordering

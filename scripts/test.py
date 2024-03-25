@@ -1,7 +1,7 @@
 import os
 import time
 import argparse
-from basket.env import Env
+from basket.env import load_env_from_yaml
 from basket.sim import AnalyticalSimulator
 from basket.ui import TaichiUI
 
@@ -18,18 +18,15 @@ def parse_args():
 
 
 def main(args):
-    env = Env.load_from_yaml(args.env)
+    env = load_env_from_yaml(args.env)
 
     sim = AnalyticalSimulator(env)
     ui = TaichiUI(sim)
 
-    start_tme = time.time()
-    while sim.in_x_bounds():
-        cur_tme = time.time() - start_tme
-        if ui.has_tapped():
-            sim.add_tap_time(cur_tme)
-        sim.sim_to_time(cur_tme)
-        ui.step()
+    ui.play()
+
+    print(sim.pos_list)
+    print(sim.vel_list)
 
 
 if __name__ == '__main__':

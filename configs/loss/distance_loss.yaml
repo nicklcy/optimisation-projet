@@ -1,2 +1,6 @@
 loss:
   type: distance
+
+  dis_typ: L2
+
+  coeff_dir: 10

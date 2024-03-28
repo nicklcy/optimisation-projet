@@ -25,6 +25,12 @@ class TaichiUI(UI):
         self.gui.circles(np.array([[pos_x.val, pos_y.val]]),
                          radius=self.ball_radius, color=self.ball_color)
 
+        target = self.sim.env.target_pos
+        pos_x = (target[0] - bounds[0][0]) / (bounds[0][1] - bounds[0][0])
+        pos_y = (target[1] - bounds[1][0]) / (bounds[1][1] - bounds[1][0])
+
+        self.gui.circles(np.array([[pos_x.val, pos_y.val]]),
+                         radius=self.ball_radius, color=0xFF0000)
     def step(self):
         self.render()
         if self.use_gui:

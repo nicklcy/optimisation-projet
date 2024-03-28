@@ -3,6 +3,7 @@ import time
 import argparse
 from basket.env import load_env_from_yaml
 from basket.sim import AnalyticalSimulator
+from basket.loss import DistanceLoss
 from basket.ui import TaichiUI
 
 
@@ -25,8 +26,8 @@ def main(args):
 
     ui.play()
 
-    print(sim.pos_list)
-    print(sim.vel_list)
+    loss = DistanceLoss(env, sim)
+    print(loss.get_loss(ui.sim.tap_times))
 
 
 if __name__ == '__main__':

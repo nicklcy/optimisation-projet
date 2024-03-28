@@ -1,6 +1,6 @@
 from basket.optimizer.optimizer import Optimizer
 from basket.scalar import Scalar
-from basket.utils.maths import calc_norm_2
+from basket.utils.maths import calc_sq, calc_sum
 
 class BGDOptimizer(Optimizer):
     def __init__(self, lr: float, eps: float):
@@ -11,7 +11,7 @@ class BGDOptimizer(Optimizer):
 
     def optim(self, tap_times: list[float], loss: Scalar):
         diff = loss.grad * self.lr
-        if calc_norm_2(diff.val) < self.eps:
+        if calc_sum(calc_sq(diff.val)) < self.eps:
             return True
 
         for i in range(len(tap_times)):

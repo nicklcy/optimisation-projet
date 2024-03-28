@@ -10,7 +10,7 @@ from basket.ui import TaichiUI
 def parse_args():
     folder_path = os.path.abspath(os.path.dirname(__file__))
     configs_path = os.path.join(folder_path, '..', 'configs')
-    default_env_config = os.path.join(configs_path, 'env_configs', 'basic_env.yaml')
+    default_env_config = os.path.join(configs_path, 'env', 'basic_env.yaml')
     default_loss_config = os.path.join(configs_path, 'loss', 'distance_loss.yaml')
     default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
 

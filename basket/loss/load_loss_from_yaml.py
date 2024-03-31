@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from basket.loss.distance_loss import DistanceLoss
+from basket.loss.basic_loss import BasicLoss
 from basket.utils.yaml import read_yaml_file
 
 
@@ -11,7 +11,7 @@ def load_loss_from_yaml(env, sim, filename: Path):
     loss_typ = loss_config['type']
     del loss_config['type']
 
-    if loss_typ == 'distance':
-        return DistanceLoss(env, sim, **loss_config)
+    if loss_typ == 'basic':
+        return BasicLoss(env, sim, **loss_config)
     else:
         raise ValueError

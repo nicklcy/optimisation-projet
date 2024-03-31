@@ -1,0 +1,33 @@
+environment:
+  ball_radius: 0.2
+  basket_radius: 0.5
+  basket_ring_radius: 0.2
+  board_height: 3
+  board_width: 0.1
+  bounds:
+  - - 0
+    - 10
+  - - 0
+    - 15
+  coeff_bounce: 0.6
+  gravity:
+  - 0
+  - -30
+  ground_threshold: 0.5
+  init_pos:
+  - 0
+  - 5
+  init_vel:
+  - 3
+  - 5
+  min_tap_interval: 0.1
+  tap_vel: 15
+  target_pos:
+  - 8
+  - 6
+  type: basic
+tap_times:
+- 0.42441606521606445
+- 0.6075983047485352
+- 0.8009703254699707
+- 1.184320888519287

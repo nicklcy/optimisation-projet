@@ -11,6 +11,7 @@ class Simulator:
         self.cur_tme = Scalar(init_tme)
         self.cur_pos = list(Scalar.to_scalar_iterable(self.env.init_pos))
         self.cur_vel = list(Scalar.to_scalar_iterable(self.env.init_vel))
+        self.actual_tap_times = 0
 
         self.pos_list = []
         self.vel_list = []
@@ -19,8 +20,10 @@ class Simulator:
 
         if tap_times is not None:
             self.tap_times = tap_times
+            self.interactive = False
         else:
             self.tap_times = []
+            self.interactive = True
 
     def add_tap_time(self, tme: float):
         assert tme >= self.cur_tme, "Le temps ajouté est trop tard"
@@ -42,3 +45,11 @@ class Simulator:
 
     def in_bounds(self):
         return self.in_x_bounds() and self.in_y_bounds()
+
+    def can_continue(self):
+        if not self.in_x_bounds():
+            return False
+        if self.cur_pos[1] < self.env.bounds[1][0]:
+            if not self.interactive and self.cur_tme.val > self.tap_times[-1]:
+                return False
+        return True

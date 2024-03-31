@@ -42,13 +42,18 @@ class AnalyticalSimulator(Simulator):
 
             self.cur_vel[1] = self.env.tap_vel.clone()
 
+            self.actual_tap_times += 1
             self.last_tap = tap_time
             tap_bound = self.last_tap + self.env.min_tap_interval
 
         self._to_time_no_tap(Scalar(tme))
 
     def sim_to_target(self):
-        dis = self.env.target_pos[0] - self.env.init_pos[0]
-        elapsed_tme = dis / self.env.init_vel[0]
-        tme = elapsed_tme + self.init_tme
-        self.sim_to_time(tme)
+        dis1 = self.env.target_pos[0] - self.env.basket_radius - self.env.init_pos[0]
+        elapsed_tme1 = dis1 / self.env.init_vel[0]
+        tme1 = elapsed_tme1 + self.init_tme
+        self.sim_to_time(tme1)
+
+        elapsed_tme2 = self.env.basket_radius / self.env.init_vel[0]
+        tme2 = tme1 + elapsed_tme2
+        self.sim_to_time(tme2)

@@ -11,8 +11,8 @@ def parse_args():
     folder_path = os.path.abspath(os.path.dirname(__file__))
     configs_path = os.path.join(folder_path, '..', 'configs')
     default_env_config = os.path.join(configs_path, 'env', 'basic_env.yaml')
-    default_loss_config = os.path.join(configs_path, 'loss', 'distance_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
+    default_loss_config = os.path.join(configs_path, 'loss', 'basic_loss.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'SGD.yaml')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', type=str, default=default_env_config)
@@ -26,20 +26,32 @@ def main(args):
     env = load_env_from_yaml(args.env)
 
     sim = AnalyticalSimulator(env)
-    ui = TaichiUI(sim)
+    ui = TaichiUI(sim, res=50)
 
-    ui.play()
+    # ui.play()
 
     loss = load_loss_from_yaml(env, sim, args.loss)
     opt = load_optimizer_from_yaml(args.opt)
     tap_times = ui.sim.tap_times
+    tap_times = [0.22697089688455713, 1.2266045103903374, 1.327351580829016, 2.4894422177207844]
 
-    for i in range(200):
-        if (i + 1) % 100 == 0:
+    min_loss, min_tap_times = None, []
+
+    for i in range(500):
+        if (i + 0) % 100 == 0:
             ui.play(tap_times)
         loss_with_grad = loss.get_loss(tap_times)
+
+        if min_loss is None or loss_with_grad.val < min_loss:
+            min_loss = loss_with_grad.val
+            min_tap_times = [x for x in tap_times]
+
         print(i, loss_with_grad, tap_times)
         opt.optim(tap_times, loss_with_grad)
+
+    print('Min_loss:', min_loss)
+    print('Tap_times:', min_tap_times)
+    ui.play(min_tap_times)
 
 
 if __name__ == '__main__':

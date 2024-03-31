@@ -24,7 +24,7 @@ class UI:
         self.sim.reset(tap_times=tap_times)
 
         start_tme = time.time()
-        while self.sim.in_x_bounds():
+        while self.sim.can_continue():
             cur_tme = time.time() - start_tme
             if interactive and self.has_tapped():
                 self.sim.add_tap_time(cur_tme)

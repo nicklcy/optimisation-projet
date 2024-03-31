@@ -1,0 +1,9 @@
+loss:
+  type: basic
+
+  dis_typ: L2
+
+  coeff_interval: 100
+  coeff_late: 100
+  coeff_ground: 20
+  coeff_dir: 100

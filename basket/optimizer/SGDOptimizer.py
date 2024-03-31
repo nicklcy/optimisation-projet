@@ -1,22 +1,28 @@
+import random
+
 from basket.optimizer.optimizer import Optimizer
 from basket.scalar import Scalar
 from basket.utils.maths import calc_sq, calc_sum
 
-class BGDOptimizer(Optimizer):
+class SGDOptimizer(Optimizer):
     def __init__(self, lr: float, eps: float):
         super().__init__()
 
         self.lr = float(lr)
         self.eps = float(eps)
 
-    def optim(self, tap_times: list[float], loss: Scalar):
+    def optim(self, tap_times: list[float], loss: Scalar, ignore_eps=False):
         diff = loss.grad * self.lr
-        if calc_sum(calc_sq(diff.val)) < self.eps:
-            return True
 
-        for i in range(len(tap_times)):
-            tap_times[i] -= diff.val[i]
+        flag = False
+        if calc_sum(calc_sq(diff.val)) < self.eps:
+            flag = True
+            if not ignore_eps:
+                return True
+
+        i = random.randint(0, len(tap_times)-1)
+        tap_times[i] -= diff.val[i]
 
         tap_times = self.make_tap_times_valid(tap_times)
 
-        return False
+        return flag

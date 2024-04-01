@@ -11,12 +11,13 @@ class Simulator:
         self.cur_tme = Scalar(init_tme)
         self.cur_pos = list(Scalar.to_scalar_iterable(self.env.init_pos))
         self.cur_vel = list(Scalar.to_scalar_iterable(self.env.init_vel))
-        self.actual_tap_times = 0
+        self.last_tap = 0
+        self.tap_id = 0
 
         self.pos_list = []
         self.vel_list = []
 
-        self.last_tap = None
+        self.reach_target_x = False
 
         if tap_times is not None:
             self.tap_times = tap_times
@@ -50,6 +51,6 @@ class Simulator:
         if not self.in_x_bounds():
             return False
         if self.cur_pos[1] < self.env.bounds[1][0]:
-            if not self.interactive and self.cur_tme.val > self.tap_times[-1]:
+            if not self.interactive and self.reach_target_x:
                 return False
         return True

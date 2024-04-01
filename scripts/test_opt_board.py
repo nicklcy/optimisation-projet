@@ -1,7 +1,7 @@
 import os
 import argparse
 from basket.env import load_env_from_yaml
-from basket.sim import AnalyticalSimulator
+from basket.sim import SymplecticEulerSimulator
 from basket.loss import load_loss_from_yaml
 from basket.optimizer import load_optimizer_from_yaml
 from basket.ui import TaichiUI
@@ -10,9 +10,9 @@ from basket.ui import TaichiUI
 def parse_args():
     folder_path = os.path.abspath(os.path.dirname(__file__))
     configs_path = os.path.join(folder_path, '..', 'configs')
-    default_env_config = os.path.join(configs_path, 'env', 'basic_env.yaml')
-    default_loss_config = os.path.join(configs_path, 'loss', 'basic_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'SGD.yaml')
+    default_env_config = os.path.join(configs_path, 'env', 'collide_env.yaml')
+    default_loss_config = os.path.join(configs_path, 'loss', 'board_loss.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', type=str, default=default_env_config)
@@ -25,7 +25,7 @@ def parse_args():
 def main(args):
     env = load_env_from_yaml(args.env)
 
-    sim = AnalyticalSimulator(env)
+    sim = SymplecticEulerSimulator(env, dt=0.01)
     ui = TaichiUI(sim, res=50)
 
     ui.play()
@@ -37,7 +37,7 @@ def main(args):
     min_loss, min_tap_times = None, []
 
     for i in range(500):
-        if (i + 0) % 100 == 0:
+        if (i + 0) % 1 == 0:
             ui.play(tap_times)
         loss_with_grad = loss.get_loss(tap_times)
 

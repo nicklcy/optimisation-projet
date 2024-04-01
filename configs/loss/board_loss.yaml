@@ -1,9 +1,10 @@
 loss:
-  type: basic
+  type: board
 
   dis_typ: L2
 
   coeff_interval: 10
   coeff_late: 10
   coeff_ground: 5
-  coeff_dir: 1
+  coeff_dir: 0.1
+  coeff_board: 5

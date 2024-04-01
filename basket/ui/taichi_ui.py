@@ -18,7 +18,6 @@ class TaichiUI(UI):
         ui_res = (res * (bounds[0][1] - bounds[0][0]).val,
                   res * (bounds[1][1] - bounds[1][0]).val)
         self.board_width = (env.board_width * res).val * .5
-        print(res)
 
         self.gui = ti.GUI("Basket", res=ui_res, background_color=background_color)
 

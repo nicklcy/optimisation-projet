@@ -24,7 +24,8 @@ def main(args):
     sim = SymplecticEulerSimulator(env)
     ui = TaichiUI(sim, res=50)
 
-    tap_times = [0.4, 0.8, 1.2, 1.5]
+    # tap_times = [0.4, 0.8, 1.2, 1.5]
+    tap_times = None
     ui.play(tap_times)
 
     dump_exp_yaml(os.path.join('configs', 'exp', 'test_board_collide.yaml'), {'env': args.env}, tap_times)

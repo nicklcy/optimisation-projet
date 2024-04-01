@@ -21,10 +21,10 @@ def parse_args():
 def main(args):
     env = load_env_from_yaml(args.env)
 
-    sim = SymplecticEulerSimulator(env)
+    sim = SymplecticEulerSimulator(env, dt=0.001)
     ui = TaichiUI(sim, res=50)
 
-    tap_times = [0.42441606521606445, 0.6075983047485352, 0.8009703254699707, 1.1843208885192871]
+    tap_times = [0.42441606521606445, 0.7, 0.8009703254699707, 1.1920]
     ui.play(tap_times)
 
     dump_exp_yaml(os.path.join('configs', 'exp', 'test_basket_collide.yaml'), {'env': args.env}, tap_times)

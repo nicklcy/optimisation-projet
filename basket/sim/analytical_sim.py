@@ -19,6 +19,9 @@ class AnalyticalSimulator(Simulator):
         self.cur_pos[1] += (self.cur_vel[1] + end_vel_y) * elapsed * .5
         self.cur_vel = [end_vel_x, end_vel_y]
 
+        if self.cur_pos[0].val > self.env.target_pos[0].val - 1E-5:
+            self.reach_target_x = True
+
         self.pos_list.append((self.cur_pos[0].clone(), self.cur_pos[1].clone()))
         self.vel_list.append((self.cur_vel[0].clone(), self.cur_vel[1].clone()))
 
@@ -27,24 +30,21 @@ class AnalyticalSimulator(Simulator):
     def sim_to_time(self, tme: float):
         assert tme >= self.cur_tme.val
 
-        min_tap = self.cur_tme.val
-        if self.last_tap is not None:
-            tap_bound = self.last_tap + self.env.min_tap_interval
-            if tap_bound > min_tap:
-                min_tap = tap_bound
-
-        for id, tap_time in enumerate(self.tap_times):
-            if tap_time < min_tap:
-                continue
-            if tap_time > tme:
+        while True:
+            while self.tap_id < len(self.tap_times):
+                if self.tap_times[self.tap_id] < self.last_tap + self.env.min_tap_interval:
+                    self.tap_id += 1
+                else:
+                    break
+            if self.tap_id >= len(self.tap_times):
                 break
-            self._to_time_no_tap(Scalar.create_grad_1(tap_time, id))
-
-            self.cur_vel[1] = self.env.tap_vel.clone()
-
-            self.actual_tap_times += 1
-            self.last_tap = tap_time
-            tap_bound = self.last_tap + self.env.min_tap_interval
+            tap_time = self.tap_times[self.tap_id]
+            if tap_time <= tme:
+                self._to_time_no_tap(Scalar.create_grad_1(tap_time, self.tap_id))
+                self.cur_vel[1] = Scalar(self.env.tap_vel)
+                self.last_tap = tap_time
+            else:
+                break
 
         self._to_time_no_tap(Scalar(tme))
 

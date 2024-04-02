@@ -38,7 +38,7 @@ class BoardLoss(BasicLoss):
             else:
                 tmp_loss = calc_sq(delta_y)
             if vel_list[i][1].val > 0:
-                tmp_loss -= vel_list[i][1] * self.coeff_dir
+                tmp_loss += vel_list[i][1] * self.coeff_dir
             if loss is None or tmp_loss.val < loss.val:
                 loss = tmp_loss
 

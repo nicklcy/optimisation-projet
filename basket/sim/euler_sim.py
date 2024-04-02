@@ -10,7 +10,6 @@ class SymplecticEulerSimulator(Simulator):
         super().__init__(env, init_tme, tap_times)
 
         self.dt = dt
-        self.last_collide = False
 
         self.ball_radius = self.env.ball_radius
         self.circles = []
@@ -26,6 +25,10 @@ class SymplecticEulerSimulator(Simulator):
         board_circ_y = env.target_pos[1] + env.board_height
         self.circles.append(((board_circ_x, board_circ_y), env.board_width * .5))
 
+    def reset(self, init_tme: float = 0, tap_times=None):
+        super().reset(init_tme, tap_times)
+
+        self.last_collide = False
         self.collide_board_id = []
 
     def collide_plane(self, theta):

@@ -73,7 +73,7 @@ def cos(x: scalar_type) -> scalar_type:
 def arctan(x: scalar_type) -> scalar_type:
     val = math.atan(Scalar.get_val(x))
     if isinstance(x, Scalar):
-        return Scalar(val=val, grad=x.grad * (1 / math.sqrt(x.val**2+1)))
+        return Scalar(val=val, grad=x.grad * (1 /(x.val**2+1)))
     else:
         return val
 

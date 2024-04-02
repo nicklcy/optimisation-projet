@@ -35,7 +35,7 @@ class BasicLoss(Loss):
 
     def get_loss_2(self):
         loss = Scalar(0)
-        tap_times = self.sim.tap_times
+        tap_times = [0] + self.sim.tap_times
         mx_tap_time = self.sim.last_tap
         for i in range(len(tap_times)):
             if i + 1 < len(tap_times):
@@ -43,7 +43,11 @@ class BasicLoss(Loss):
                     Scalar.create_grad_1(tap_times[i], i)
                 diff = Scalar(self.env.min_tap_interval) - dt
                 if diff.val > 0:
-                    loss += diff * self.coeff_interval
+                    loss += diff * self.coeff_interval * (len(tap_times) - (i + 1))
+            if i == 0:
+                diff = Scalar(self.env.min_tap_interval) - Scalar.create_grad_1(tap_times[i], i)
+                if diff.val > 0:
+                    loss += diff * self.coeff_interval * len(tap_times)
             if tap_times[i] > mx_tap_time:
                 diff = Scalar.create_grad_1(tap_times[i], i) - mx_tap_time
                 loss += diff * self.coeff_late

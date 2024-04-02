@@ -52,10 +52,8 @@ class SymplecticEulerSimulator(Simulator):
         self.cur_pos[0] += self.cur_vel[0] * dt
         self.cur_pos[1] += self.cur_vel[1] * dt
 
-        self.pos_list.append(
-            (self.cur_pos[0].clone(), self.cur_pos[1].clone()))
-        self.vel_list.append(
-            (self.cur_vel[0].clone(), self.cur_vel[1].clone()))
+        self.pos_list.append((self.cur_pos[0].clone(), self.cur_pos[1].clone()))
+        self.vel_list.append((self.cur_vel[0].clone(), self.cur_vel[1].clone()))
 
     def step(self):
         # S'il touche avec les autres objets
@@ -131,3 +129,4 @@ class SymplecticEulerSimulator(Simulator):
                 if self.tap_times[self.tap_id] < self.cur_tme.val + self.dt:
                     self.do_tap(Scalar.create_grad_1(self.tap_times[self.tap_id], self.tap_id))
             self.step()
+        print('Done')

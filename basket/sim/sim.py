@@ -53,4 +53,6 @@ class Simulator:
         if self.cur_pos[1] < self.env.bounds[1][0]:
             if not self.interactive and self.reach_target_x:
                 return False
+            if self.cur_pos[1] < self.env.bounds[1][0] * 2 - self.env.bounds[1][1]:
+                return False
         return True

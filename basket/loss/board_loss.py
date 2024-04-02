@@ -31,6 +31,7 @@ class BoardLoss(BasicLoss):
         def update_loss(i):
             nonlocal loss
             t = (target_x - pos_list[i][0]) / vel_list[i][0]
+            t = t.val
             actual_y = pos_list[i][1] + vel_list[i][1] * t
             delta_y = actual_y - target_y
             if self.dis_typ == 'L1':
@@ -97,6 +98,7 @@ class BoardLoss(BasicLoss):
                 idx = i
 
         t = (board_x - pos_list[idx][0]) / vel_list[idx][0]
+        t = t.val
         actual_y = pos_list[idx][1] + vel_list[idx][1] * t
 
         if actual_y < board_y_lb:

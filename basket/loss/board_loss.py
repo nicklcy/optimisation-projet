@@ -80,13 +80,10 @@ class BoardLoss(BasicLoss):
         return loss
 
     def get_loss_4(self):
-        if self.sim.collide_board_id:
-            return Scalar(0)
-
         pos_list, vel_list = self.sim.pos_list, self.sim.vel_list
 
         board_x = self.env.target_pos[0] + self.env.basket_radius + \
-            self.env.basket_ring_radius
+            self.env.basket_ring_radius * .5
         board_y_lb = self.env.target_pos[1]
         board_y_ub = self.env.target_pos[1] + self.env.board_height
 

@@ -3,7 +3,7 @@ loss:
 
   dis_typ: L2
 
-  coeff_interval: 10
-  coeff_late: 10
+  coeff_interval: 100
+  coeff_late: 100
   coeff_ground: 5
   coeff_dir: 1

@@ -5,6 +5,9 @@ class Optimizer:
     def __init__(self):
         pass
 
+    def clip_loss(self, loss: Scalar, max_abs_value: float = 5000):
+        loss.grad.clip(max_abs_value)
+
     def optim(self, tap_times: list[float], loss: Scalar):
         raise NotImplementedError
 

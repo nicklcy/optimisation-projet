@@ -21,14 +21,18 @@ class AnalyticalSimulator(Simulator):
 
         if self.cur_pos[0].val > self.env.target_pos[0].val - 1E-5:
             self.reach_target_x = True
+        if self.cur_pos[0].val < self.env.target_pos[0].val + 1E-5:
+            self.max_tap_time = tme.val
 
         self.pos_list.append((self.cur_pos[0].clone(), self.cur_pos[1].clone()))
         self.vel_list.append((self.cur_vel[0].clone(), self.cur_vel[1].clone()))
+        self.tme_list.append(self.cur_tme.val)
 
         self.cur_tme = tme.clone()
 
     def sim_to_time(self, tme: float):
         assert tme >= self.cur_tme.val
+
 
         while True:
             while self.tap_id < len(self.tap_times):

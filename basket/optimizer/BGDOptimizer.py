@@ -10,6 +10,8 @@ class BGDOptimizer(Optimizer):
         self.eps = float(eps)
 
     def optim(self, tap_times: list[float], loss: Scalar):
+        self.clip_loss(loss)
+
         diff = loss.grad * self.lr
         if calc_sum(calc_sq(diff.val)) < self.eps:
             return True

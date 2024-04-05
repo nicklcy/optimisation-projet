@@ -12,6 +12,8 @@ class SGDOptimizer(Optimizer):
         self.eps = float(eps)
 
     def optim(self, tap_times: list[float], loss: Scalar, ignore_eps=False):
+        self.clip_loss(loss)
+
         diff = loss.grad * self.lr
 
         flag = False

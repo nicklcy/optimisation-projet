@@ -19,6 +19,10 @@ def process_arr(process_scalar: Callable, merge_arr: Callable,
         return process_scalar(arr)
 
 
+def get_val(arr: scalar_arr_type):
+    return process_arr(Scalar.get_val, lambda l: type(arr)(l), arr)
+
+
 def calc_scalar_abs(num: scalar_type):
     if isinstance(num, Scalar):
         return num if num.val >= 0 else Scalar(0) - num
@@ -73,7 +77,7 @@ def cos(x: scalar_type) -> scalar_type:
 def arctan(x: scalar_type) -> scalar_type:
     val = math.atan(Scalar.get_val(x))
     if isinstance(x, Scalar):
-        return Scalar(val=val, grad=x.grad * (1 /(x.val**2+1)))
+        return Scalar(val=val, grad=x.grad * (1 / (x.val**2+1)))
     else:
         return val
 

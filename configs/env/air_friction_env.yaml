@@ -1,0 +1,25 @@
+environment:
+  type: basic
+
+  init_pos: [0, 5]
+  target_pos: [8, 6]
+  init_vel: [3, 5]
+
+  gravity: [0, -25]
+  bounds: [[0, 10], [0, 15]]
+
+  tap_vel: 15
+  min_tap_interval: 0.1
+
+  ball_radius: 0.2
+
+  ground_threshold: 0.5
+
+  basket_radius: 0.5
+  basket_ring_radius: 0.2
+  board_width: 0.1
+  board_height: 3
+
+  coeff_bounce: 0.6
+
+  air_friction: 0.01

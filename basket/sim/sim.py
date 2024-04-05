@@ -16,6 +16,7 @@ class Simulator:
 
         self.pos_list = []
         self.vel_list = []
+        self.tme_list = []
 
         self.reach_target_x = False
 
@@ -25,6 +26,8 @@ class Simulator:
         else:
             self.tap_times = []
             self.interactive = True
+
+        self.max_tap_time = 0
 
     def add_tap_time(self, tme: float):
         assert tme >= self.cur_tme, "Le temps ajouté est trop tard"

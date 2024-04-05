@@ -44,6 +44,13 @@ class GradArray:
     def __repr__(self):
         return repr(self.val)
 
+    def clip(self, max_abs_value: float):
+        for i in range(self.size):
+            if self.val[i] > max_abs_value:
+                self.val[i] = max_abs_value
+            elif self.val[i] < -max_abs_value:
+                self.val[i] = -max_abs_value
+
 
 @functools.total_ordering
 class Scalar:

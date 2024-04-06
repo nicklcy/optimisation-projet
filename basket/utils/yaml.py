@@ -16,7 +16,8 @@ def dump_exp_yaml(file: pathlib.Path, configs, tap_times=None):
             if isinstance(configs[key], (str, pathlib.Path)):
                 configs[key] = read_yaml_file(configs[key])
         for key_yaml, key_dict_list in ('environment', ['env']), \
-                ('optimizer', ['opt']), ('loss', []):
+                ('optimizer', ['opt']), ('loss', []), \
+                ('sim', []):
             for key_dict in key_dict_list + [key_yaml]:
                 if key_dict in configs.keys():
                     item = configs[key_dict]

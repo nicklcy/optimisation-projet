@@ -11,7 +11,7 @@ class SGDOptimizer(Optimizer):
         self.lr = float(lr)
         self.eps = float(eps)
 
-    def optim(self, tap_times: list[float], loss: Scalar, ignore_eps=False):
+    def optim(self, tap_times: list[float], loss: Scalar):
         self.clip_loss(loss)
 
         diff = loss.grad * self.lr
@@ -19,8 +19,6 @@ class SGDOptimizer(Optimizer):
         flag = False
         if calc_sum(calc_sq(diff.val)) < self.eps:
             flag = True
-            if not ignore_eps:
-                return True
 
         i = random.randint(0, len(tap_times)-1)
         tap_times[i] -= diff.val[i]

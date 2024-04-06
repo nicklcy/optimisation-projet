@@ -13,12 +13,14 @@ class BGDOptimizer(Optimizer):
         self.clip_loss(loss)
 
         diff = loss.grad * self.lr
+        flag = False
+
         if calc_sum(calc_sq(diff.val)) < self.eps:
-            return True
+            flag = True
 
         for i in range(len(tap_times)):
             tap_times[i] -= diff.val[i]
 
         tap_times = self.make_tap_times_valid(tap_times)
 
-        return False
+        return flag

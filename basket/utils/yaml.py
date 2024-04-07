@@ -16,8 +16,7 @@ def dump_exp_yaml(file: pathlib.Path, configs, tap_times=None):
             if isinstance(configs[key], (str, pathlib.Path)):
                 configs[key] = read_yaml_file(configs[key])
         for key_yaml, key_dict_list in ('environment', ['env']), \
-                ('optimizer', ['opt']), ('loss', []), \
-                ('sim', []):
+                ('optimizer', ['opt']), ('loss', []):
             for key_dict in key_dict_list + [key_yaml]:
                 if key_dict in configs.keys():
                     item = configs[key_dict]
@@ -28,3 +27,15 @@ def dump_exp_yaml(file: pathlib.Path, configs, tap_times=None):
         if tap_times is not None:
             content['tap_times'] = tap_times
         f.write(yaml.dump(content))
+
+def setting_write_in(file: pathlib.Path, key, value):
+    with open(file, 'r') as env:
+        data = yaml.safe_load(env)
+    if isinstance(value, list):
+        for i in range(len(value)):
+            data['environment'][key][i] += value[i]
+    else:
+        data['environment'][key] = value
+
+    with open(file, 'w') as env:
+        yaml.safe_dump(data, env)

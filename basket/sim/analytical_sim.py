@@ -61,3 +61,9 @@ class AnalyticalSimulator(Simulator):
         elapsed_tme2 = self.env.basket_radius / self.env.init_vel[0]
         tme2 = tme1 + elapsed_tme2
         self.sim_to_time(tme2)
+
+    def sim_trajectory(self, dt=0.01):
+        tme = 0
+        while self.can_continue():
+            tme += dt
+            self.sim_to_time(tme)

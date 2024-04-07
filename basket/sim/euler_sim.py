@@ -36,7 +36,6 @@ class SymplecticEulerSimulator(Simulator):
         for circle in self.circles:
             circle[1] = False
         self.last_collide_board = False
-        self.collide_board_id = []
 
     def collide_plane(self, theta):
         # Toucher avec une surface dont l'angle est theta
@@ -98,10 +97,12 @@ class SymplecticEulerSimulator(Simulator):
                 collide = True
                 if not self.last_collide_board:
                     self.collide_plane(Scalar(math.pi / 2))
-                    self.collide_board_id.append(len(self.pos_list))
                 self.last_collide_board = True
             else:
                 self.last_collide_board = False
+
+        if collide:
+            self.collide_list.append(len(self.pos_list) - 1)
 
         self.has_collided |= collide
 
@@ -160,3 +161,6 @@ class SymplecticEulerSimulator(Simulator):
                 if self.cur_tme.val <= self.tap_times[self.tap_id] < self.cur_tme.val + self.dt:
                     self.do_tap(Scalar.create_grad_1(self.tap_times[self.tap_id], self.tap_id))
             self.step()
+
+    def sim_trajectory(self):
+        self.sim_to_target()

@@ -30,3 +30,7 @@ class UI:
                 self.sim.add_tap_time(cur_tme)
             self.sim.sim_to_time(cur_tme)
             self.step()
+    
+    def InitPos(self, tap_times=None):
+        while self.use_gui:
+            self.step()

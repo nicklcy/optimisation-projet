@@ -2,6 +2,7 @@ from pathlib import Path
 
 from basket.optimizer.BGDOptimizer import BGDOptimizer
 from basket.optimizer.SGDOptimizer import SGDOptimizer
+from basket.optimizer.AdamOptimizer import AdamOptimizer
 from basket.utils.yaml import read_yaml_file
 
 def load_optimizer_from_yaml(filename: Path):
@@ -15,5 +16,7 @@ def load_optimizer_from_yaml(filename: Path):
         return BGDOptimizer(**opt_config)
     elif opt_type == 'SGD':
         return SGDOptimizer(**opt_config)
+    elif opt_type == 'Adam':
+        return AdamOptimizer(**opt_config)
     else:
         raise NotImplementedError

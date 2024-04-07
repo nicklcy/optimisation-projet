@@ -17,6 +17,7 @@ class Simulator:
         self.pos_list = []
         self.vel_list = []
         self.tme_list = []
+        self.collide_list = []
 
         self.reach_target_x = False
 
@@ -37,6 +38,9 @@ class Simulator:
         raise NotImplementedError
 
     def sim_to_target(self):
+        raise NotImplementedError
+
+    def sim_trajectory(self):
         raise NotImplementedError
 
     def in_x_bounds(self):

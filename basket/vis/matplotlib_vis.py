@@ -66,5 +66,16 @@ class MatplotlibVis(Vis):
                 if sim.tme_list[i] <= tap_time < sim.tme_list[i+1]:
                     self.ax.scatter([traj_pos[i, 0]], [traj_pos[i, 1]], c=self.traj_color)
 
+        print('sim.collide_list:', sim.collide_list)
+        for id in sim.collide_list:
+            if id - 1 in sim.collide_list:
+                continue
+            ball = plt.Circle((traj_pos[id, 0], traj_pos[id, 1]),
+                              self.ball_radius.val, fc=self.traj_color + (0.5,))
+            self.ax.add_patch(ball)
+
     def show(self):
         plt.show()
+
+    def save_file(self, filename):
+        self.fig.savefig(filename)

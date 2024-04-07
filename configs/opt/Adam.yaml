@@ -1,0 +1,7 @@
+optimizer:
+  type: Adam
+  lr: 1E-2
+  beta1: 0.5
+  beta2: 0.9
+  eps: 1E-10
+  eps_grad: 1E-6

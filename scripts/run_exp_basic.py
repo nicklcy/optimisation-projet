@@ -15,7 +15,7 @@ def parse_args():
     configs_path = os.path.join(folder_path, '..', 'configs')
     default_env_config = os.path.join(configs_path, 'env', 'basic_env.yaml')
     default_loss_config = os.path.join(configs_path, 'loss', 'basic_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'Adam.yaml')
     default_exp_folder = os.path.join(folder_path, '..', 'exp')
 
     parser = argparse.ArgumentParser()

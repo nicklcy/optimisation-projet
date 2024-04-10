@@ -7,7 +7,11 @@ from basket.optimizer import load_optimizer_from_yaml
 from basket.ui import TaichiUI
 from Play_setting import PlaySetting
 from test_opt_air_fric import test_opt_air
+from test_opt_air_fric import test_air
 
 if __name__ == '__main__':
     mode = PlaySetting()
-    test_opt_air()
+    if mode:
+        test_opt_air()
+    else:
+        test_air()

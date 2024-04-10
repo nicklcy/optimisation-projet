@@ -5,7 +5,7 @@ environment:
   target_pos: [8, 6]
   init_vel: [3, 5]
 
-  gravity: [0, -30]
+  gravity: [0, -25]
   bounds: [[0, 10], [0, 15]]
 
   tap_vel: 15
@@ -15,9 +15,11 @@ environment:
 
   ground_threshold: 0.5
 
-  basket_radius: 1
-  basket_ring_radius: 0.05
+  basket_radius: 0.5
+  basket_ring_radius: 0.2
   board_width: 0.1
   board_height: 3
 
   coeff_bounce: 0.6
+
+  air_friction: 0.01

@@ -1,25 +1,29 @@
 environment:
-  type: basic
-
-  init_pos: [0, 5]
-  target_pos: [8, 6]
-  init_vel: [3, 5]
-
-  gravity: [0, -25]
-  bounds: [[0, 10], [0, 15]]
-
-  tap_vel: 15
-  min_tap_interval: 0.1
-
-  ball_radius: 0.2
-
+  air_friction: 0.009999999776482582
+  ball_radius: 0.3
+  basket_radius: 0.6170457070940262
+  basket_ring_radius: 0.0766254895065647
+  board_height: 4
+  board_width: 0.5406756514931317
+  bounds:
+  - - 0
+    - 10
+  - - 0
+    - 15
+  coeff_bounce: 0.6000000238418579
+  gravity:
+  - 0
+  - -25
   ground_threshold: 0.5
-
-  basket_radius: 0.5
-  basket_ring_radius: 0.2
-  board_width: 0.1
-  board_height: 3
-
-  coeff_bounce: 0.6
-
-  air_friction: 0.01
+  init_pos:
+  - 1.5736526995897293
+  - 2.8220171108841896
+  init_vel:
+  - 3
+  - 5
+  min_tap_interval: 0.1
+  tap_vel: 15
+  target_pos:
+  - 8.380624536424875
+  - 8.31160535174422
+  type: basic

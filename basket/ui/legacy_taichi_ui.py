@@ -3,10 +3,10 @@ import numpy as np
 from basket.ui.ui import UI
 
 
-class TaichiUI(UI):
+class LegacyTaichiUI(UI):
     def __init__(self, sim, tap_times=None, use_gui=True,
-                 res=100, background_color=0x4F4F4F,
-                 ball_color=0xFF7F24):
+                 res=100, background_color=0xFFFFFF,
+                 ball_color=0x0000FF):
         super().__init__(sim, tap_times, use_gui)
 
         env = self.sim.env
@@ -18,6 +18,7 @@ class TaichiUI(UI):
         ui_res = (res * (bounds[0][1] - bounds[0][0]).val,
                   res * (bounds[1][1] - bounds[1][0]).val)
         self.board_width = (env.board_width * res).val * .5
+
         self.gui = ti.GUI("Basket", res=ui_res, background_color=background_color)
 
     def has_tapped(self):
@@ -32,38 +33,20 @@ class TaichiUI(UI):
 
     def render(self):
         env = self.sim.env
-        # dessiner la boule
-
-
         # dessiner le but
-        # self.gui.circles(np.array([self.get_pos(env.target_pos)]),
-        #                  radius=self.ball_radius, color=0xFF0000)
+        self.gui.circles(np.array([self.get_pos(env.target_pos)]),
+                         radius=self.ball_radius, color=0xFF0000)
 
-        # dessiner le basket
-
-        
-        for i in range(30):
-            theta = np.pi*i/30
-            basket_point = [env.target_pos[0] + env.basket_radius* np.cos(theta),
-                            env.target_pos[1] + env.basket_radius* np.sin(theta)*0.3]
-            self.gui.circles(np.array([self.get_pos(basket_point)]),
-                         radius=self.basket_ring_radius, color=0xEE2C2C)
-            
+        # dessiner la boule
         self.gui.circles(np.array([self.get_pos(self.sim.cur_pos)]),
                          radius=self.ball_radius, color=self.ball_color)
 
+        # dessiner le basket
         basket_1 = [env.target_pos[0] - env.basket_radius, env.target_pos[1]]
         basket_2 = [env.target_pos[0] + env.basket_radius, env.target_pos[1]]
         self.gui.circles(np.array([self.get_pos(basket_1), self.get_pos(basket_2)]),
-                         radius=self.basket_ring_radius, color=0xEE2C2C)
+                         radius=self.basket_ring_radius, color=0x000000)
 
-        for i in range(30):
-            theta = -np.pi*i/30
-            basket_point = [env.target_pos[0] + env.basket_radius* np.cos(theta),
-                            env.target_pos[1] + env.basket_radius* np.sin(theta)*0.3]
-            self.gui.circles(np.array([self.get_pos(basket_point)]),
-                         radius=self.basket_ring_radius, color=0xEE2C2C)
-            
         # dessiner le panneau
         if env.board_width:
             board_x1 = basket_2[0] + env.basket_ring_radius * .5
@@ -74,7 +57,7 @@ class TaichiUI(UI):
                                np.array([self.get_pos((board_x1, board_y2)),
                                          self.get_pos((board_x2, board_y1))]),
                                np.array([self.get_pos((board_x2, board_y2))] * 2),
-                               color=0xDEB887)
+                               color=0x000000)
 
     def step(self):
         self.render()

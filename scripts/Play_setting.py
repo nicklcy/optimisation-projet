@@ -28,8 +28,8 @@ def parse_args():
 
 class SUI(TaichiUI):
     def __init__(self, sim, tap_times=None, use_gui=True, 
-                 res=100, background_color=16777215, ball_color=0):
-        super().__init__(sim, tap_times, use_gui, res, background_color, ball_color)
+                 res=100, ball_color=0):
+        super().__init__(sim, tap_times, use_gui, res, ball_color=ball_color)
         self.res = res
         self.ball_r =  self.gui.slider('Ball', 0.1, 3, step=1)
         self.ball_r.value = 1
@@ -53,6 +53,8 @@ class SUI(TaichiUI):
         self.AI = self.gui.button("AI")
         self.Mode = False
     def render(self):
+        super().render()
+
         env = self.sim.env
         self.ball_radius = (env.ball_radius * self.res * self.ball_r.value).val
         self.basket_ring_radius = (env.basket_ring_radius * self.res * self.ring_r.value).val
@@ -85,34 +87,6 @@ class SUI(TaichiUI):
             elif e.key == self.AI:
                 self.Mode = True
                 self.use_gui = False
-
-                
-
-        # dessiner la boule
-        self.gui.circles(np.array([self.get_pos(env.init_pos)] + np.array([self.ballx.value,self.bally.value])),
-                         radius=self.ball_radius, color=self.ball_color)
-
-        # dessiner le but
-        self.gui.circles(np.array([self.get_pos(env.target_pos)]) + np.array([self.targetx.value, self.targety.value]),
-                         radius=self.ball_radius, color=0xFF0000)
-
-        # dessiner le basket
-        basket_1 = [env.target_pos[0] - env.basket_radius*self.basket_r.value, env.target_pos[1]]
-        basket_2 = [env.target_pos[0] + env.basket_radius*self.basket_r.value, env.target_pos[1]]
-        self.gui.circles(np.array([self.get_pos(basket_1), self.get_pos(basket_2)] + np.array([self.targetx.value, self.targety.value])),
-                         radius=self.basket_ring_radius, color=0xFF00FF)
-
-        # dessiner le panneau
-        if env.board_width:
-            board_x1 = basket_2[0] + env.basket_ring_radius * .5 * self.ring_r.value
-            board_x2 = board_x1 + env.board_width
-            board_y1 = basket_2[-1]
-            board_y2 = board_y1 + env.board_height
-            self.gui.triangles(np.array([self.get_pos((board_x1, board_y1))] * 2) + np.array([self.targetx.value, self.targety.value]),
-                               np.array([self.get_pos((board_x1, board_y2)),
-                                         self.get_pos((board_x2, board_y1))])+ np.array([self.targetx.value, self.targety.value]),
-                               np.array([self.get_pos((board_x2, board_y2))] * 2)+ np.array([self.targetx.value, self.targety.value]),
-                               color=0xFF00FF)
 
 def main(args):
     env = load_env_from_yaml(args.env)

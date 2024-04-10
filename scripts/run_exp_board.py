@@ -15,7 +15,7 @@ def parse_args():
     configs_path = os.path.join(folder_path, '..', 'configs')
     default_env_config = os.path.join(configs_path, 'env', 'air_friction_env.yaml')
     default_loss_config = os.path.join(configs_path, 'loss', 'board_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'Adam.yaml')
     default_exp_folder = os.path.join(folder_path, '..', 'exp')
 
     parser = argparse.ArgumentParser()
@@ -88,7 +88,10 @@ def main(args):
         'env': args.env,
         'loss': args.loss,
         'opt': args.opt,
-        'sim': { 'type': 'analytical' }
+        'sim': {
+            'type': 'euler',
+            'dt': sim.dt
+        }
     }
     env_config_path = os.path.join(exp_dir, 'config.yaml')
     dump_exp_yaml(env_config_path, exp_config_dict, min_tap_times)

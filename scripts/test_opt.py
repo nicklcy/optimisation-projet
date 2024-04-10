@@ -12,7 +12,7 @@ def parse_args():
     configs_path = os.path.join(folder_path, '..', 'configs')
     default_env_config = os.path.join(configs_path, 'env', 'basic_env.yaml')
     default_loss_config = os.path.join(configs_path, 'loss', 'basic_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'SGD.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'Adam.yaml')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', type=str, default=default_env_config)
@@ -37,7 +37,7 @@ def main(args):
     min_loss, min_tap_times = None, []
 
     for i in range(500):
-        if (i + 0) % 100 == 0:
+        if (i + 0) % 1 == 0:
             ui.play(tap_times)
         loss_with_grad = loss.get_loss(tap_times)
 

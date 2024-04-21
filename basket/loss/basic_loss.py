@@ -42,7 +42,7 @@ class BasicLoss(Loss):
                     Scalar.create_grad_1(tap_times[i], i)
                 diff = Scalar(self.env.min_tap_interval) - dt
                 if diff.val > 0:
-                    loss += diff * self.coeff_interval * (len(tap_times) - (i + 1))
+                    loss += diff * self.coeff_interval# * (len(tap_times) - (i + 1))
             if i == 0:
                 diff = Scalar(self.env.min_tap_interval) - Scalar.create_grad_1(tap_times[i], i)
                 if diff.val > 0:

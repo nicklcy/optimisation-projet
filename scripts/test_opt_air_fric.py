@@ -32,10 +32,10 @@ def test_air():
     ui = TaichiUI(sim, res=50)
     for i in range(200):
         ui.play()
-        loss = load_loss_from_yaml(env, sim, args.loss)
-        tap_times = ui.sim.tap_times
-        loss_with_grad = loss.get_loss(tap_times)
-        print(i, loss_with_grad, tap_times)
+        # loss = load_loss_from_yaml(env, sim, args.loss)
+        # tap_times = ui.sim.tap_times
+        # loss_with_grad = loss.get_loss(tap_times)
+        # print(i, loss_with_grad, tap_times)
 
 
 def test_opt_air():

@@ -3,6 +3,7 @@ import time
 import argparse
 from basket.env import load_env_from_yaml
 from basket.sim import AnalyticalSimulator, SymplecticEulerSimulator
+from basket.loss import load_loss_from_yaml
 from basket.utils.yaml import read_yaml_file
 from basket.vis import MatplotlibVis
 
@@ -20,6 +21,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--exp-dir', type=str, default=default_exp_dir)
     parser.add_argument('--dst', type=str, default='')
+    parser.add_argument('--no-show', action='store_true')
 
     return parser.parse_args()
 
@@ -47,11 +49,21 @@ def main(args):
     else:
         raise ValueError
 
+    if 'loss' in config_content.keys():
+        loss = load_loss_from_yaml(env, sim, config_path)
+    else:
+        loss = None
+
     sim.sim_trajectory()
 
     vis.add_trajectory(sim)
 
-    vis.show()
+    if loss is not None:
+        print(loss.get_loss(sim.tap_times))
+
+    if not args.no_show:
+        vis.show()
+
     vis.save_file(args.dst)
 
 

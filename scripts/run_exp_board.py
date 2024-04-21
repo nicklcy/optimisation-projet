@@ -7,7 +7,7 @@ from basket.loss import load_loss_from_yaml
 from basket.optimizer import load_optimizer_from_yaml
 from basket.sim.euler_sim import SymplecticEulerSimulator
 from basket.ui import TaichiUI
-from basket.utils.yaml import dump_exp_yaml
+from basket.utils.yaml import read_yaml_file, dump_exp_yaml
 
 
 def parse_args():
@@ -15,7 +15,7 @@ def parse_args():
     configs_path = os.path.join(folder_path, '..', 'configs')
     default_env_config = os.path.join(configs_path, 'env', 'air_friction_env.yaml')
     default_loss_config = os.path.join(configs_path, 'loss', 'board_loss.yaml')
-    default_opt_config = os.path.join(configs_path, 'opt', 'Adam.yaml')
+    default_opt_config = os.path.join(configs_path, 'opt', 'BGD.yaml')
     default_exp_folder = os.path.join(folder_path, '..', 'exp')
 
     parser = argparse.ArgumentParser()
@@ -24,11 +24,12 @@ def parse_args():
     parser.add_argument('--opt', type=str, default=default_opt_config)
     parser.add_argument('--N', type=int, default=4)
     parser.add_argument('--exp-dir', type=str, default=default_exp_folder)
+    parser.add_argument('--init-tap-times-yaml', type=str, default='')
 
     return parser.parse_args()
 
 
-def init_tap_times(env, N):
+def initialize_tap_times(env, N):
     dx = env.target_pos[0] - env.init_pos[0]
     vel_x = env.init_vel[0]
     tme = dx.val / vel_x.val
@@ -53,14 +54,21 @@ def main(args):
 
     loss = load_loss_from_yaml(env, sim, args.loss)
     opt = load_optimizer_from_yaml(args.opt)
+
     tap_times = ui.sim.tap_times
-    tap_times = init_tap_times(env, args.N)
+    if args.init_tap_times_yaml:
+        content = read_yaml_file(args.init_tap_times_yaml)
+        if 'init_tap_times' in content.keys():
+            tap_times = content['init_tap_times']
+    if not tap_times:
+        tap_times = initialize_tap_times(env, args.N)
+    init_tap_times = [x for x in tap_times]
 
     min_loss, min_tap_times = None, []
 
     csv_table = []
 
-    for i in range(100):
+    for i in range(500):
         if (i + 0) % 10 == 0:
             ui.play(tap_times)
         loss_with_grad = loss.get_loss(tap_times)
@@ -94,7 +102,7 @@ def main(args):
         }
     }
     env_config_path = os.path.join(exp_dir, 'config.yaml')
-    dump_exp_yaml(env_config_path, exp_config_dict, min_tap_times)
+    dump_exp_yaml(env_config_path, exp_config_dict, min_tap_times, init_tap_times)
 
     csv_line_str = [','.join(map(str, csv_row)) for csv_row in csv_table]
     csv_content = '\n'.join(csv_line_str)

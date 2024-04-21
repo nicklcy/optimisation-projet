@@ -43,25 +43,20 @@ class SymplecticEulerSimulator(Simulator):
         new_ang = theta * 2 - cur_ang
         cur_vel_mod = calc_sqrt(calc_sq_sum(self.cur_vel))
         new_vel_mod = cur_vel_mod * self.env.coeff_bounce
+        if new_vel_mod < 1:
+            new_vel_mod = min(cur_vel_mod, Scalar(1))
         self.cur_vel = [new_vel_mod * cos(new_ang), new_vel_mod * sin(new_ang)]
 
-    def do_euler_integration(self, dt):
-        accel = [self.env.gravity[0].clone(), self.env.gravity[1].clone()]
-        vel_mod = calc_sqrt(calc_sq_sum(self.cur_vel))
+    def do_euler_integration(self, dt, has_accel=True):
+        if has_accel:
+            accel = [self.env.gravity[0].clone(), self.env.gravity[1].clone()]
+            vel_mod = calc_sqrt(calc_sq_sum(self.cur_vel))
 
-        self.cur_vel[0] += accel[0] * dt
-        self.cur_vel[1] += accel[1] * dt
+            accel[0] -= (self.env.air_friction) * vel_mod * self.cur_vel[0]
+            accel[1] -= (self.env.air_friction) * vel_mod * self.cur_vel[1]
 
-        sgn_0, sgn_1 = self.cur_vel[0] > 0, self.cur_vel[1] > 0
-        accel[0] = (Scalar(0) - self.env.air_friction) * vel_mod * self.cur_vel[0]
-        accel[1] = (Scalar(0) - self.env.air_friction) * vel_mod * self.cur_vel[1]
-
-        self.cur_vel[0] += accel[0] * dt
-        self.cur_vel[1] += accel[1] * dt
-        if (self.cur_vel[0] > 0) ^ sgn_0:
-            self.cur_vel[0] = Scalar(0)
-        if (self.cur_vel[1] > 0) ^ sgn_1:
-            self.cur_vel[1] = Scalar(0)
+            self.cur_vel[0] += accel[0] * dt
+            self.cur_vel[1] += accel[1] * dt
 
         self.cur_tme += dt
         self.cur_pos[0] += self.cur_vel[0] * dt
@@ -93,8 +88,8 @@ class SymplecticEulerSimulator(Simulator):
         if self.env.board_width and not collide:
             if self.board_y[0] < self.cur_pos[1] < self.board_y[1] and \
                     self.board_x - self.env.ball_radius < self.cur_pos[0] < self.board_x:
-                # Collision avec le panneau
                 collide = True
+                # Collision avec le panneau
                 if not self.last_collide_board:
                     self.collide_plane(Scalar(math.pi / 2))
                 self.last_collide_board = True
@@ -106,13 +101,13 @@ class SymplecticEulerSimulator(Simulator):
 
         self.has_collided |= collide
 
-        self.do_euler_integration(self.dt)
+        self.do_euler_integration(self.dt, not collide)
 
-        if collide:
-            if self.cur_pos[1] > self.env.target_pos[1]:
+        if self.has_collided:
+            if not self.max_tap_time:
                 self.max_tap_time = self.cur_tme.val
         else:
-            if self.cur_pos[0] < self.env.target_pos[0]:
+            if self.cur_pos[0] < self.env.target_pos[0] - self.env.basket_radius:
                 self.max_tap_time = self.cur_tme.val
 
     def _to_time_no_tap(self, tme: float):

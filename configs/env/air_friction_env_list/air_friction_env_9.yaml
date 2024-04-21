@@ -1,29 +1,29 @@
 environment:
-  air_friction: 0.009999999776482582
-  ball_radius: 0.3054999947547913
+  air_friction: 0.01
+  ball_radius: 0.3
   basket_radius: 0.6170457070940262
   basket_ring_radius: 0.0766254895065647
   board_height: 4
-  board_width: 0.5406756514931317
+  board_width: 0.55
   bounds:
   - - 0
     - 10
   - - 0
     - 15
-  coeff_bounce: 0.6000000238418579
+  coeff_bounce: 0.6
   gravity:
   - 0
   - -25
   ground_threshold: 0.5
   init_pos:
-  - 1.5736526995897293
-  - 2.8220171108841896
+  - 0
+  - 5
   init_vel:
   - 3
   - 5
   min_tap_interval: 0.1
   tap_vel: 15
   target_pos:
-  - 8.28062453866005
-  - 5.611606071470305
+  - 8
+  - 9
   type: basic

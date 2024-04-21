@@ -2,7 +2,7 @@ environment:
   type: basic
 
   init_pos: [0, 5]
-  target_pos: [8, 6]
+  target_pos: [8, 9]
   init_vel: [3, 5]
 
   gravity: [0, -30]

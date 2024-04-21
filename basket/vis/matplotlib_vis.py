@@ -3,6 +3,12 @@ from basket.utils.maths import get_val
 import numpy as np
 import matplotlib.pyplot as plt
 
+try:
+    import scienceplots
+    plt.style.use(['science'])
+except Exception:
+    pass
+
 class MatplotlibVis(Vis):
     def __init__(self,
                  env=None,
@@ -12,8 +18,8 @@ class MatplotlibVis(Vis):
                  basket_ring_radius=None,
                  board_width=None,
                  board_height=None,
-                 scale=0.5,
-                 dpi=256,
+                 scale=0.3,
+                 dpi=512,
                  traj_color=(0, 0, 1),
                  target_color=(1, 0, 0),
                  ring_color=(0, 0, 0),
@@ -21,6 +27,8 @@ class MatplotlibVis(Vis):
         super().__init__(env, bounds, ball_radius,
                          basket_radius, basket_ring_radius,
                          board_width, board_height)
+
+        self.dpi = dpi
 
         self.traj_color = traj_color
         self.target_color = target_color
@@ -31,12 +39,12 @@ class MatplotlibVis(Vis):
         siz_y = (self.bounds[1][1] - self.bounds[1][0]).val * scale
 
         self.fig, self.ax = plt.subplots(1, 1,
-                                         figsize=(siz_x, siz_y))
+                                         figsize=(siz_x, siz_y), dpi=self.dpi)
         ax = self.ax
         ax.spines['left'].set_position(('data', 0))
         ax.spines['bottom'].set_position(('data', 0))
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
+        # ax.spines['top'].set_visible(False)
+        # ax.spines['right'].set_visible(False)
         ax.set_xlim(*get_val(self.bounds[0]))
         ax.set_ylim(*get_val(self.bounds[1]))
 
@@ -53,7 +61,7 @@ class MatplotlibVis(Vis):
         self.ax.add_patch(basket_1)
         self.ax.add_patch(basket_2)
 
-        board_pos = basket_2_pos
+        board_pos = get_val(basket_2_pos)
         board_pos[0] += self.basket_ring_radius.val * .5
         board = plt.Rectangle(board_pos, self.board_width.val, self.board_height.val, fc=self.board_color)
         self.ax.add_patch(board)
@@ -78,4 +86,4 @@ class MatplotlibVis(Vis):
         plt.show()
 
     def save_file(self, filename):
-        self.fig.savefig(filename)
+        self.fig.savefig(filename, dpi=self.dpi)

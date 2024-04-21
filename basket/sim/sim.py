@@ -11,7 +11,7 @@ class Simulator:
         self.cur_tme = Scalar(init_tme)
         self.cur_pos = list(Scalar.to_scalar_iterable(self.env.init_pos))
         self.cur_vel = list(Scalar.to_scalar_iterable(self.env.init_vel))
-        self.last_tap = 0
+        self.last_tap = -.1
         self.tap_id = 0
 
         self.pos_list = []
